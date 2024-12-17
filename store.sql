@@ -1,7 +1,7 @@
 CREATE TYPE TIPO_PRODUCTO AS ENUM('sobremesa', 'portatil','dispositivos moviles', 'consolas');
 
 -- Tabla local
-CREATE TABLE LOCAL(
+CREATE TABLE LOCAL (
   id_local INT,
   provincia VARCHAR(100) NOT NULL CHECK (provincia <> ''),
   ciudad VARCHAR(100) NOT NULL CHECK (ciudad <> ''),
@@ -17,11 +17,16 @@ CREATE TABLE LOCAL(
 
 -- Tabla Zona
 CREATE TABLE ZONA (
-  id_zona INT,
-  id_local INT,
+  id_zona INT NOT NULL,
+  id_local INT NOT NULL,
+  provincia VARCHAR(100) NOT NULL,
+  ciudad VARCHAR(100) NOT NULL,
+  calle VARCHAR(100) NOT NULL,
   tipo VARCHAR(50) NOT NULL,
-  PRIMARY KEY(id_zona, id_local),
-  FOREIGN KEY (id_local) REFERENCES LOCAL(id_local) ON DELETE CASCADE ON UPDATE CASCADE
+  PRIMARY KEY(id_zona, id_local, provincia, ciudad, calle),
+  FOREIGN KEY (id_local, provincia, ciudad, calle) REFERENCES LOCAL(id_local, provincia, ciudad, calle)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
 );
 -- INSERT INTO zona (id, id_vivero, tipo, longitud, latitud) VALUES (1, 3, 'ALMACEN', 28.6167721, -17.8881046);
 -- INSERT INTO zona (id, id_vivero, tipo, longitud, latitud) VALUES (2, 3, 'ABIERTO', 28.6167689, -17.8881023);
@@ -39,7 +44,7 @@ CREATE TABLE PRODUCTO (
   almacenamiento VARCHAR(100) NOT NULL CHECK (almacenamiento <> ''),
   marca VARCHAR(100) NOT NULL CHECK (marca <> ''),
   stock INT CHECK (stock >= 0),
-  PRIMARY KEY (id)
+  PRIMARY KEY (id_producto)
 );
 -- INSERT INTO PRODUCTO (id, nombre, tipo, precio_unidad, stock) VALUES (1, 'Maceta de barro', 'Macetas', 15.50, 200);
 -- INSERT INTO PRODUCTO (id, nombre, tipo, precio_unidad, stock) VALUES (2, 'Abono orgánico', 'Fertilizantes', 25.00, 150);
@@ -49,13 +54,16 @@ CREATE TABLE PRODUCTO (
 
 -- Zona contiene producto 
 CREATE TABLE ZONA_PRODUCTO (
-  id_local INT,
-  id_zona INT,
-  id_producto INT UNIQUE,
-  PRIMARY KEY(id_vivero, id_zona, id_producto),
+  id_local INT NOT NULL,
+  id_zona INT NOT NULL,
+  id_producto INT UNIQUE NOT NULL,
+  provincia VARCHAR(100) NOT NULL,
+  ciudad VARCHAR(100) NOT NULL,
+  calle VARCHAR(100) NOT NULL,
+  PRIMARY KEY(id_local, id_zona, id_producto),
 
-  FOREIGN KEY (id_zona, id_vivero) REFERENCES ZONA(id, id_vivero) ON DELETE CASCADE ON UPDATE CASCADE,
-  FOREIGN KEY (id_producto) REFERENCES Producto(id) ON DELETE CASCADE ON UPDATE CASCADE
+  FOREIGN KEY (id_zona, id_local, provincia, ciudad, calle) REFERENCES ZONA(id_zona, id_local, provincia, ciudad, calle) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY (id_producto) REFERENCES PRODUCTO(id_producto) ON DELETE CASCADE ON UPDATE CASCADE
 );
 -- INSERT INTO ZONA_PRODUCTO (id_zona, id_vivero, id_producto) VALUES (1, 3, 3);
 -- INSERT INTO ZONA_PRODUCTO (id_zona, id_vivero, id_producto) VALUES (2, 3, 1);
@@ -64,7 +72,7 @@ CREATE TABLE ZONA_PRODUCTO (
 -- INSERT INTO ZONA_PRODUCTO (id_zona, id_vivero, id_producto) VALUES (1, 2, 4);
 -- -- Tabla Empleado
 CREATE TABLE EMPLEADO (
-  id SERIAL PRIMARY KEY,
+  id_empleado SERIAL PRIMARY KEY,
   dni VARCHAR(9) UNIQUE NOT NULL,
   CONSTRAINT dni_valido CHECK (dni ~ '^[0-9]{8}[A-Z]$'),
   nombre VARCHAR(100) NOT NULL CHECK (nombre <> ''),
@@ -84,7 +92,7 @@ CREATE TABLE SOCIO (
   nombre VARCHAR(100) NOT NULL CHECK (nombre <> ''),
   apellidos VARCHAR(100) NOT NULL CHECK (apellidos <> ''),
   datos_bancarios VARCHAR(34) NOT NULL CHECK (datos_bancarios <> ''), -- 34 para poner datos del estilo IBAN, de formato largo 
-  CONSTRAINT dni_valido CHECK (dni ~ '^[0-9]{8}[A-Z]$'),
+  CONSTRAINT dni_valido CHECK (dni ~ '^[0-9]{8}[A-Z]$')
 );
 -- INSERT INTO SOCIO (id, dni, nombre, apellidos, mes, volumen, descuento) VALUES (1, '12345678A', 'Juan', 'Pérez Gómez', 'enero', 1500.00, 10.00);
 -- INSERT INTO SOCIO (id, dni, nombre, apellidos, mes, volumen, descuento) VALUES (2, '23456789B', 'María', 'López Rodríguez', 'febrero', 2000.50, 15.00);
@@ -100,8 +108,8 @@ CREATE TABLE PEDIDO (
   fecha DATE NOT NULL CHECK (fecha <= CURRENT_DATE),
   importe_total DECIMAL(10, 2) NOT NULL CHECK (importe_total >= 0),
 
-  FOREIGN KEY (id_empleado) REFERENCES Empleado(id) ON DELETE RESTRICT ON UPDATE RESTRICT,
-  FOREIGN KEY (id_socio) REFERENCES Socio(id) ON DELETE
+  FOREIGN KEY (id_empleado) REFERENCES EMPLEADO(id_empleado) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  FOREIGN KEY (id_socio) REFERENCES SOCIO(id_socio) ON DELETE
   SET NULL ON UPDATE CASCADE
 );
 -- INSERT INTO PEDIDO (id, id_empleado, id_socio, fecha, importe_total) VALUES (1, 1, 2, '2024-10-01', 150.75);
@@ -115,14 +123,18 @@ CREATE TABLE TRABAJA (
   id_empleado INT,
   id_local INT,
   id_zona INT,
+  provincia VARCHAR(100) NOT NULL,
+  ciudad VARCHAR(100) NOT NULL,
+  calle VARCHAR(100) NOT NULL,
   fecha_inicio DATE,
   fecha_final DATE,
   horario TIME[],
 
   PRIMARY KEY(id_empleado,fecha_inicio, horario),
   FOREIGN KEY (id_empleado) REFERENCES EMPLEADO(id_empleado) ON DELETE CASCADE ON UPDATE CASCADE,
+  -- PRIMARY KEY(id_zona, id_local, provincia, ciudad, calle),
   -- Si se borra un empleado, se elimina su historial
-  FOREIGN KEY (id_zona, id_local) REFERENCES ZONA(id_zona, id_local) ON DELETE
+  FOREIGN KEY (id_zona, id_local, provincia, ciudad, calle) REFERENCES ZONA(id_zona, id_local, provincia, ciudad, calle) ON DELETE
   SET NULL ON UPDATE CASCADE -- Si se cambia el id de Zona, se actualiza en Trabaja
 );
 -- INSERT INTO TRABAJA (id_empleado, id_vivero, id_zona, epoca, año, tarea) VALUES (1, 3, 1, 'primavera', 2024, 'Mantenimiento de almacén');
@@ -158,7 +170,7 @@ CREATE TABLE LIBRE (
   id_empleado INT NOT NULL,
   fecha_inicio DATE NOT NULL,
   fecha_final DATE NOT NULL CHECK (fecha_final > fecha_inicio),
-  motivo VARCHAR(100) NOT NULL (motivo <> ''),
+  motivo VARCHAR(100) NOT NULL CHECK (motivo <> ''),
   baja BOOLEAN NOT NULL,
 
   PRIMARY KEY(fecha_inicio),
@@ -170,10 +182,10 @@ CREATE TABLE LIBRE (
 -- Table sobremesa
 CREATE TABLE SOBREMESA (
   id_producto INT NOT NULL,
-  caja VARCHAR(100) NOT NULL (motivo <> ''),
-  refrigeracion VARCHAR(100) NOT NULL (motivo <> ''),
-  placa_base VARCHAR(100) NOT NULL (motivo <> ''),
-  fuente VARCHAR(100) NOT NULL (motivo <> ''),
+  caja VARCHAR(100) NOT NULL CHECK (caja <> ''),
+  refrigeracion VARCHAR(100) NOT NULL CHECK (refrigeracion <> ''),
+  placa_base VARCHAR(100) NOT NULL CHECK (placa_base <> ''),
+  fuente VARCHAR(100) NOT NULL CHECK (fuente <> ''),
 
   PRIMARY KEY(id_producto),
 
@@ -185,8 +197,8 @@ CREATE TABLE SOBREMESA (
 -- Table portatiles 
 CREATE TABLE PORTATILES(
   id_producto INT NOT NULL,
-  bateria VARCHAR(100) NOT NULL (motivo <> ''),
-  pulgadas VARCHAR(100) NOT NULL (motivo <> ''),
+  bateria VARCHAR(100) NOT NULL CHECK (bateria <> ''),
+  pulgadas VARCHAR(100) NOT NULL CHECK (pulgadas <> ''),
 
   PRIMARY KEY(id_producto),
 
@@ -198,9 +210,9 @@ CREATE TABLE PORTATILES(
 -- Table dispositivos_moviles
 CREATE TABLE DISPOSITIVOS_MOVILES(
   id_producto INT NOT NULL,
-  bateria VARCHAR(100) NOT NULL (motivo <> ''),
-  pulgadas VARCHAR(100) NOT NULL (motivo <> ''),
-  camara VARCHAR(100) NOT NULL (motivo <> ''),
+  bateria VARCHAR(100) NOT NULL CHECK (bateria<> ''),
+  pulgadas VARCHAR(100) NOT NULL CHECK (pulgadas <> ''),
+  camara VARCHAR(100) NOT NULL CHECK (camara <> ''),
 
   PRIMARY KEY(id_producto),
 
