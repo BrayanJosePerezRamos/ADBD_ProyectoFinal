@@ -146,3 +146,20 @@ CREATE TABLE PEDIDO_PRODUCTO (
 -- INSERT INTO PEDIDO_PRODUCTO (id_producto, id_pedido, unidades) VALUES (3, 2, 7);
 -- INSERT INTO PEDIDO_PRODUCTO (id_producto, id_pedido, unidades) VALUES (1, 3, 2);
 -- INSERT INTO PEDIDO_PRODUCTO (id_producto, id_pedido, unidades) VALUES (4, 4, 8);
+
+
+---------------------------------------------------------------------------------------------------------------
+-----------------------------------------FALTA LIBRE, LAS TABLAS DE HERENCIA ----------------------------------
+---------------------------------------------------------------------------------------------------------------
+CREATE TABLE LIBRE (
+  id_empleado INT NOT NULL,
+  fecha_inicio DATE NOT NULL,
+  fecha_final DATE NOT NULL CHECK (fecha_final > fecha_inicio),
+  motivo VARCHAR(100) NOT NULL (motivo <> ''),
+  baja BOOLEAN NOT NULL,
+
+  PRIMARY KEY(fecha_inicio),
+
+  FOREIGN KEY(id_empleado) REFERENCES EMPLEADO(id_empleado)
+
+)
