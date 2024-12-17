@@ -1,4 +1,5 @@
 CREATE TYPE TIPO_PRODUCTO ENUM('sobremesa', 'portatil','dispositivos moviles', 'consolas');
+
 -- Tabla local
 CREATE TABLE LOCAL(
   id_local INT,
@@ -149,8 +150,9 @@ CREATE TABLE PEDIDO_PRODUCTO (
 
 
 ---------------------------------------------------------------------------------------------------------------
------------------------------------------FALTA LIBRE, LAS TABLAS DE HERENCIA ----------------------------------
+----------------------------------------------------TABLAS NUEVAS ---------------------------------------------
 ---------------------------------------------------------------------------------------------------------------
+
 -- Tabla libre
 CREATE TABLE LIBRE (
   id_empleado INT NOT NULL,
@@ -216,3 +218,5 @@ CREATE TABLE CONSOLA(
   FOREIGN KEY(id_producto) REFERENCES PRODUCTO(id_producto)
 
 );
+
+
