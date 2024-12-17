@@ -1,4 +1,5 @@
 CREATE TYPE TIPO_PRODUCTO AS ENUM('sobremesa', 'portatil','dispositivos moviles', 'consolas');
+CREATE TYPE TIPO_ZONA AS ENUM('almacen', 'tienda','reparacion');
 
 -- Tabla local
 CREATE TABLE LOCAL (
@@ -17,7 +18,7 @@ CREATE TABLE ZONA (
   provincia VARCHAR(100) NOT NULL,
   ciudad VARCHAR(100) NOT NULL,
   calle VARCHAR(100) NOT NULL,
-  tipo VARCHAR(50) NOT NULL,
+  tipo TIPO_ZONA NOT NULL,
   PRIMARY KEY(id_zona, id_local, provincia, ciudad, calle),
   FOREIGN KEY (id_local, provincia, ciudad, calle) REFERENCES LOCAL(id_local, provincia, ciudad, calle)
     ON DELETE CASCADE
