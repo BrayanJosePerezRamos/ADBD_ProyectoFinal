@@ -1,4 +1,4 @@
-CREATE TYPE TIPO_PRODUCTO ENUM('sobremesa', 'portatil','dispositivos moviles', 'consolas');
+CREATE TYPE TIPO_PRODUCTO AS ENUM('sobremesa', 'portatil','dispositivos moviles', 'consolas');
 
 -- Tabla local
 CREATE TABLE LOCAL(
@@ -7,7 +7,7 @@ CREATE TABLE LOCAL(
   ciudad VARCHAR(100) NOT NULL CHECK (ciudad <> ''),
   calle VARCHAR(100) NOT NULL CHECK (calle <> ''),
   nombre VARCHAR(100) NOT NULL CHECK (nombre <> ''),
-  PRIMARY KEY(id, provincia, ciudad, calle)
+  PRIMARY KEY(id_local, provincia, ciudad, calle)
 );
 -- INSERT INTO vivero (id,longitud, latitud, nombre) VALUES (1,  28.6167721, -17.8881046, 'TACO');
 -- INSERT INTO vivero (id,longitud, latitud, nombre) VALUES (2,  29.6238863, -17.8971276, 'ICOD');
@@ -20,7 +20,7 @@ CREATE TABLE ZONA (
   id_zona INT,
   id_local INT,
   tipo VARCHAR(50) NOT NULL,
-  PRIMARY KEY(id, id_local),
+  PRIMARY KEY(id_zona, id_local),
   FOREIGN KEY (id_local) REFERENCES LOCAL(id_local) ON DELETE CASCADE ON UPDATE CASCADE
 );
 -- INSERT INTO zona (id, id_vivero, tipo, longitud, latitud) VALUES (1, 3, 'ALMACEN', 28.6167721, -17.8881046);
