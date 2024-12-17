@@ -46,7 +46,7 @@ CREATE TABLE ZONA_PRODUCTO (
   provincia VARCHAR(100) NOT NULL,
   ciudad VARCHAR(100) NOT NULL,
   calle VARCHAR(100) NOT NULL,
-  PRIMARY KEY(id_local, id_zona, id_producto),
+  PRIMARY KEY(id_local, id_zona, id_producto ,provincia, ciudad, calle),
 
   FOREIGN KEY (id_zona, id_local, provincia, ciudad, calle) REFERENCES ZONA(id_zona, id_local, provincia, ciudad, calle) ON DELETE CASCADE ON UPDATE CASCADE,
   FOREIGN KEY (id_producto) REFERENCES PRODUCTO(id_producto) ON DELETE CASCADE ON UPDATE CASCADE
@@ -68,7 +68,7 @@ CREATE TABLE SOCIO (
   dni VARCHAR(9) UNIQUE NOT NULL,
   nombre VARCHAR(100) NOT NULL CHECK (nombre <> ''),
   apellidos VARCHAR(100) NOT NULL CHECK (apellidos <> ''),
-  datos_bancarios VARCHAR(34) NOT NULL CHECK (datos_bancarios <> ''), -- 34 para poner datos del estilo IBAN, de formato largo 
+  datos_bancarios VARCHAR(60) NOT NULL CHECK (datos_bancarios <> ''), -- 34 para poner datos del estilo IBAN, de formato largo 
   CONSTRAINT dni_valido CHECK (dni ~ '^[0-9]{8}[A-Z]$')
 );
 

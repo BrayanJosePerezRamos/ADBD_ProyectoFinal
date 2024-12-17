@@ -44,3 +44,95 @@ INSERT INTO ZONA (id_zona, id_local, provincia, ciudad, calle, tipo) VALUES
 (19, 19, 'Valladolid', 'Valladolid', 'Calle de la Constitución', 'tienda'),
 (20, 20, 'Logroño', 'Logroño', 'Calle Portales', 'almacen');
 
+-- Producto
+INSERT INTO PRODUCTO (id_producto, nombre, tipo, precio_unidad, ram, almacenamiento, marca, stock) VALUES
+(1, 'Laptop A', 'sobremesa', 1200.50, '8 GB', '512 GB SSD', 'HP', 100),
+(2, 'Laptop B', 'portatil', 1500.00, '16 GB', '1 TB SSD', 'Dell', 50),
+(3, 'Smartphone X', 'dispositivos moviles', 700.99, '6 GB', '128 GB', 'Samsung', 200),
+(4, 'Smartphone Y', 'dispositivos moviles', 800.00, '8 GB', '256 GB', 'Apple', 150),
+(5, 'Consola Play X', 'consolas', 400.00, '4 GB', '1 TB', 'Sony', 300),
+(6, 'Consola Xbox Z', 'consolas', 450.00, '8 GB', '1 TB', 'Microsoft', 180),
+(7, 'Desktop Tower', 'sobremesa', 1000.00, '16 GB', '2 TB HDD', 'Lenovo', 120),
+(8, 'Tablet A', 'portatil', 350.00, '4 GB', '64 GB', 'Huawei', 250),
+(9, 'Tablet B', 'portatil', 400.00, '6 GB', '128 GB', 'Samsung', 180),
+(10, 'Smartwatch C', 'dispositivos moviles', 250.00, '2 GB', '16 GB', 'Garmin', 500),
+(11, 'Laptop C', 'portatil', 1300.00, '8 GB', '256 GB SSD', 'Acer', 110),
+(12, 'Smartphone Z', 'dispositivos moviles', 900.00, '8 GB', '512 GB', 'Google', 220),
+(13, 'Desktop Pro', 'sobremesa', 1700.00, '32 GB', '2 TB SSD', 'Apple', 90),
+(14, 'Laptop X', 'portatil', 2000.00, '32 GB', '1 TB SSD', 'MSI', 80),
+(15, 'Smartphone V', 'dispositivos moviles', 750.00, '8 GB', '128 GB', 'OnePlus', 200),
+(16, 'Smartphone W', 'dispositivos moviles', 850.00, '12 GB', '256 GB', 'Xiaomi', 160),
+(17, 'Consola Switch', 'consolas', 350.00, '4 GB', '32 GB', 'Nintendo', 300),
+(18, 'Smartwatch D', 'dispositivos moviles', 150.00, '1 GB', '8 GB', 'Fitbit', 600),
+(19, 'Desktop Elite', 'sobremesa', 2500.00, '64 GB', '4 TB SSD', 'Alienware', 50),
+(20, 'Laptop Y', 'portatil', 2200.00, '16 GB', '1 TB SSD', 'Razer', 40);
+
+-- Zona_producto
+INSERT INTO ZONA_PRODUCTO (id_local, id_zona, id_producto, provincia, ciudad, calle) VALUES
+(1, 1, 1, 'Madrid', 'Madrid', 'Gran Vía'),
+(2, 2, 2, 'Barcelona', 'Barcelona', 'Passeig de Gràcia'),
+(3, 3, 3, 'Valencia', 'Valencia', 'Avenida del Oeste'),
+(4, 4, 4, 'Sevilla', 'Sevilla', 'Calle Tetuán'),
+(5, 5, 5, 'Madrid', 'Madrid', 'Calle de Preciados'),
+(6, 6, 6, 'Bilbao', 'Bilbao', 'Gran Vía Don Diego López de Haro'),
+(7, 7, 7, 'Zaragoza', 'Zaragoza', 'Calle del Coso'),
+(8, 8, 8, 'Murcia', 'Murcia', 'Avenida de la Constitución'),
+(9, 9, 9, 'Granada', 'Granada', 'Calle de los Reyes Católicos'),
+(10, 10, 10, 'Palma', 'Palma de Mallorca', 'Carrer de Sant Miquel'),
+(11, 11, 11, 'Málaga', 'Málaga', 'Calle Larios'),
+(12, 12, 12, 'Alicante', 'Alicante', 'Calle Maisonnave'),
+(13, 13, 13, 'Vigo', 'Vigo', 'Calle Urzáiz'),
+(14, 14, 14, 'Gijón', 'Gijón', 'Calle de la Corrida'),
+(15, 15, 15, 'Córdoba', 'Córdoba', 'Calle Capitulares'),
+(16, 16, 16, 'Salamanca', 'Salamanca', 'Calle Toro'),
+(17, 17, 17, 'Oviedo', 'Oviedo', 'Calle Uría'),
+(18, 18, 18, 'Santander', 'Santander', 'Calle Cádiz'),
+(19, 19, 19, 'Valladolid', 'Valladolid', 'Calle de la Constitución'),
+(20, 20, 20, 'Logroño', 'Logroño', 'Calle Portales');
+
+-- Empleado
+INSERT INTO EMPLEADO (dni, nombre, apellidos, datos_bancarios) VALUES
+('12345678A', 'John', 'Doe', 'IBAN123456789'),
+('23456789B', 'Jane', 'Smith', 'IBAN987654321'),
+('34567890C', 'Carlos', 'Gomez', 'IBAN456123789'),
+('45678901D', 'Maria', 'Garcia', 'IBAN789123456'),
+('56789012E', 'Luis', 'Martinez', 'IBAN321456987'),
+('67890123F', 'Anna', 'Lopez', 'IBAN654321654'),
+('78901234G', 'Pedro', 'Hernandez', 'IBAN852963741'),
+('89012345H', 'Laura', 'Sanchez', 'IBAN741852963'),
+('90123456I', 'Marta', 'Perez', 'IBAN963741852'),
+('12345678J', 'David', 'Diaz', 'IBAN741963852'),
+('23456789K', 'Sara', 'Fernandez', 'IBAN258369741'),
+('34567890L', 'Antonio', 'Ruiz', 'IBAN369258147'),
+('45678901M', 'Eva', 'Ramirez', 'IBAN123987654'),
+('56789012N', 'Miguel', 'Jimenez', 'IBAN987321654'),
+('67890123O', 'Jose', 'Vazquez', 'IBAN654987321'),
+('78901234P', 'Elena', 'Gonzalez', 'IBAN258741963'),
+('89012345Q', 'Rosa', 'Mendez', 'IBAN369852741'),
+('90123456R', 'Pablo', 'Torres', 'IBAN852741963'),
+('12345678S', 'Isabel', 'Castro', 'IBAN147258369'),
+('23456789T', 'Victor', 'Moreno', 'IBAN258369147');
+
+-- Socio
+INSERT INTO SOCIO (id_socio, dni, nombre, apellidos, datos_bancarios) VALUES
+(1, '12345678A', 'John', 'Doe', 'ES1234567890123456789012345678901234'),
+(2, '23456789B', 'Jane', 'Smith', 'ES9876543210987654321098765432109876'),
+(3, '34567890C', 'Carlos', 'Gomez', 'ES4561237890123456789012345678901234'),
+(4, '45678901D', 'Maria', 'Garcia', 'ES7891234560987654321098765432109876'),
+(5, '56789012E', 'Luis', 'Martinez', 'ES3214569870123456789012345678901234'),
+(6, '67890123F', 'Anna', 'Lopez', 'ES6543216540987654321098765432109876'),
+(7, '78901234G', 'Pedro', 'Hernandez', 'ES8529637410987654321098765432109876'),
+(8, '89012345H', 'Laura', 'Sanchez', 'ES7418529630123456789012345678901234'),
+(9, '90123456I', 'Marta', 'Perez', 'ES9637418520987654321098765432109876'),
+(10, '12345678J', 'David', 'Diaz', 'ES7419638520123456789012345678901234'),
+(11, '23456789K', 'Sara', 'Fernandez', 'ES2583697410987654321098765432109876'),
+(12, '34567890L', 'Antonio', 'Ruiz', 'ES3692581470123456789012345678901234'),
+(13, '45678901M', 'Eva', 'Ramirez', 'ES1239876540987654321098765432109876'),
+(14, '56789012N', 'Miguel', 'Jimenez', 'ES9873216540123456789012345678901234'),
+(15, '67890123O', 'Jose', 'Vazquez', 'ES6549873210987654321098765432109876'),
+(16, '78901234P', 'Elena', 'Gonzalez', 'ES2587419630123456789012345678901234'),
+(17, '89012345Q', 'Rosa', 'Mendez', 'ES3698527410987654321098765432109876'),
+(18, '90123456R', 'Pablo', 'Torres', 'ES8527419630123456789012345678901234'),
+(19, '12345678S', 'Isabel', 'Castro', 'ES1472583690987654321098765432109876'),
+(20, '23456789T', 'Victor', 'Moreno', 'ES2583691470123456789012345678901234');
+
