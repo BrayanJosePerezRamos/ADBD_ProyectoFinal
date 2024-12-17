@@ -78,85 +78,57 @@ CREATE TABLE EMPLEADO (
 
 -- Tabla Socio
 CREATE TABLE SOCIO (
-  id INT PRIMARY KEY,
+  id_socio INT PRIMARY KEY,
   dni VARCHAR(9) UNIQUE NOT NULL,
-  CONSTRAINT dni_valido CHECK (dni ~ '^[0-9]{8}[A-Z]$'),
   nombre VARCHAR(100) NOT NULL CHECK (nombre <> ''),
   apellidos VARCHAR(100) NOT NULL CHECK (apellidos <> ''),
-  mes VARCHAR(20) NOT NULL CHECK (
-    mes IN (
-      'enero',
-      'febrero',
-      'marzo',
-      'abril',
-      'mayo',
-      'junio',
-      'julio',
-      'agosto',
-      'septiembre',
-      'octubre',
-      'noviembre',
-      'diciembre'
-    )
-  ),
-  volumen DECIMAL(10, 2) DEFAULT 0 CHECK (volumen >= 0),
-  descuento DECIMAL(5, 2) DEFAULT 0 CHECK (
-    descuento BETWEEN 0 AND 100
-  )
+  datos_bancarios VARCHAR(34) NOT NULL CHECK (datos_bancarios <> ''), -- 34 para poner datos del estilo IBAN, de formato largo 
+  CONSTRAINT dni_valido CHECK (dni ~ '^[0-9]{8}[A-Z]$'),
 );
-INSERT INTO SOCIO (id, dni, nombre, apellidos, mes, volumen, descuento) VALUES (1, '12345678A', 'Juan', 'Pérez Gómez', 'enero', 1500.00, 10.00);
-INSERT INTO SOCIO (id, dni, nombre, apellidos, mes, volumen, descuento) VALUES (2, '23456789B', 'María', 'López Rodríguez', 'febrero', 2000.50, 15.00);
-INSERT INTO SOCIO (id, dni, nombre, apellidos, mes, volumen, descuento) VALUES (3, '34567890C', 'Pedro', 'Sánchez Ruiz', 'marzo', 500.25, 5.00);
-INSERT INTO SOCIO (id, dni, nombre, apellidos, mes, volumen, descuento) VALUES (4, '45678901D', 'Ana', 'Martín Fernández', 'abril', 1000.00, 20.00);
-INSERT INTO SOCIO (id, dni, nombre, apellidos, mes, volumen, descuento) VALUES (5, '56789012E', 'Luis', 'García Pérez', 'mayo', 750.75, 12.50);
+-- INSERT INTO SOCIO (id, dni, nombre, apellidos, mes, volumen, descuento) VALUES (1, '12345678A', 'Juan', 'Pérez Gómez', 'enero', 1500.00, 10.00);
+-- INSERT INTO SOCIO (id, dni, nombre, apellidos, mes, volumen, descuento) VALUES (2, '23456789B', 'María', 'López Rodríguez', 'febrero', 2000.50, 15.00);
+-- INSERT INTO SOCIO (id, dni, nombre, apellidos, mes, volumen, descuento) VALUES (3, '34567890C', 'Pedro', 'Sánchez Ruiz', 'marzo', 500.25, 5.00);
+-- INSERT INTO SOCIO (id, dni, nombre, apellidos, mes, volumen, descuento) VALUES (4, '45678901D', 'Ana', 'Martín Fernández', 'abril', 1000.00, 20.00);
+-- INSERT INTO SOCIO (id, dni, nombre, apellidos, mes, volumen, descuento) VALUES (5, '56789012E', 'Luis', 'García Pérez', 'mayo', 750.75, 12.50);
 
 -- -- Tabla Pedido
 CREATE TABLE PEDIDO (
-  id INT PRIMARY KEY,
+  id_pedido INT PRIMARY KEY,
   id_empleado INT,
   id_socio INT,
   fecha DATE NOT NULL CHECK (fecha <= CURRENT_DATE),
   importe_total DECIMAL(10, 2) NOT NULL CHECK (importe_total >= 0),
-  --Trigger?
+
   FOREIGN KEY (id_empleado) REFERENCES Empleado(id) ON DELETE RESTRICT ON UPDATE RESTRICT,
   FOREIGN KEY (id_socio) REFERENCES Socio(id) ON DELETE
   SET NULL ON UPDATE CASCADE
 );
-INSERT INTO PEDIDO (id, id_empleado, id_socio, fecha, importe_total) VALUES (1, 1, 2, '2024-10-01', 150.75);
-INSERT INTO PEDIDO (id, id_empleado, id_socio, fecha, importe_total) VALUES (2, 2, 1, '2024-10-15', 200.00);
-INSERT INTO PEDIDO (id, id_empleado, id_socio, fecha, importe_total) VALUES (3, 1, 3, '2024-10-20', 75.50);
-INSERT INTO PEDIDO (id, id_empleado, id_socio, fecha, importe_total) VALUES (4, 3, 2, '2024-10-10', 300.00);
-INSERT INTO PEDIDO (id, id_empleado, id_socio, fecha, importe_total) VALUES (5, 2, 4, '2024-10-25', 120.20);
+-- INSERT INTO PEDIDO (id, id_empleado, id_socio, fecha, importe_total) VALUES (1, 1, 2, '2024-10-01', 150.75);
+-- INSERT INTO PEDIDO (id, id_empleado, id_socio, fecha, importe_total) VALUES (2, 2, 1, '2024-10-15', 200.00);
+-- INSERT INTO PEDIDO (id, id_empleado, id_socio, fecha, importe_total) VALUES (3, 1, 3, '2024-10-20', 75.50);
+-- INSERT INTO PEDIDO (id, id_empleado, id_socio, fecha, importe_total) VALUES (4, 3, 2, '2024-10-10', 300.00);
+-- INSERT INTO PEDIDO (id, id_empleado, id_socio, fecha, importe_total) VALUES (5, 2, 4, '2024-10-25', 120.20);
 
 -- Tabla Trabaja
 CREATE TABLE TRABAJA (
   id_empleado INT,
-  id_vivero INT,
+  id_local INT,
   id_zona INT,
-  epoca VARCHAR(50) CHECK (
-    epoca IN ('primavera', 'verano', 'otoño', 'invierno')
-  ),
-  -- Restricción semántica de estaciones
-  año INT CHECK (
-    año > 1900
-    AND año <= EXTRACT(
-      YEAR
-      FROM CURRENT_DATE
-    )
-  ),
-  -- Asegurarse de que el año sea válido
-  tarea VARCHAR(255) NOT NULL CHECK (tarea <> ''),
-  PRIMARY KEY(id_empleado, epoca, año),
-  FOREIGN KEY (id_empleado) REFERENCES Empleado(id) ON DELETE CASCADE ON UPDATE CASCADE,
+  fecha_inicio DATE,
+  fecha_final DATE,
+  horario TIME[],
+
+  PRIMARY KEY(id_empleado,fecha_inicio, horario),
+  FOREIGN KEY (id_empleado) REFERENCES EMPLEADO(id_empleado) ON DELETE CASCADE ON UPDATE CASCADE,
   -- Si se borra un empleado, se elimina su historial
-  FOREIGN KEY (id_zona, id_vivero) REFERENCES Zona(id, id_vivero) ON DELETE
+  FOREIGN KEY (id_zona, id_local) REFERENCES ZONA(id_zona, id_local) ON DELETE
   SET NULL ON UPDATE CASCADE -- Si se cambia el id de Zona, se actualiza en Trabaja
 );
-INSERT INTO TRABAJA (id_empleado, id_vivero, id_zona, epoca, año, tarea) VALUES (1, 3, 1, 'primavera', 2024, 'Mantenimiento de almacén');
-INSERT INTO TRABAJA (id_empleado, id_vivero, id_zona, epoca, año, tarea) VALUES (2, 3, 2, 'verano', 2024, 'Riego en zona abierta');
-INSERT INTO TRABAJA (id_empleado, id_vivero, id_zona, epoca, año, tarea) VALUES (1, 3, 3, 'otoño', 2023, 'Cuidado de arboleda');
-INSERT INTO TRABAJA (id_empleado, id_vivero, id_zona, epoca, año, tarea) VALUES (3, 1, 4, 'invierno', 2023, 'Siembra de macetas');
-INSERT INTO TRABAJA (id_empleado, id_vivero, id_zona, epoca, año, tarea) VALUES (2, 2, 1, 'primavera', 2024, 'Organización del almacén');
+-- INSERT INTO TRABAJA (id_empleado, id_vivero, id_zona, epoca, año, tarea) VALUES (1, 3, 1, 'primavera', 2024, 'Mantenimiento de almacén');
+-- INSERT INTO TRABAJA (id_empleado, id_vivero, id_zona, epoca, año, tarea) VALUES (2, 3, 2, 'verano', 2024, 'Riego en zona abierta');
+-- INSERT INTO TRABAJA (id_empleado, id_vivero, id_zona, epoca, año, tarea) VALUES (1, 3, 3, 'otoño', 2023, 'Cuidado de arboleda');
+-- INSERT INTO TRABAJA (id_empleado, id_vivero, id_zona, epoca, año, tarea) VALUES (3, 1, 4, 'invierno', 2023, 'Siembra de macetas');
+-- INSERT INTO TRABAJA (id_empleado, id_vivero, id_zona, epoca, año, tarea) VALUES (2, 2, 1, 'primavera', 2024, 'Organización del almacén');
 
 -- Tabla Contiene
 CREATE TABLE PEDIDO_PRODUCTO (
@@ -165,12 +137,12 @@ CREATE TABLE PEDIDO_PRODUCTO (
   unidades INT CHECK (unidades > 0),
   PRIMARY KEY(id_producto, id_pedido),
   -- Llave compuesta para evitar duplicidad
-  FOREIGN KEY (id_producto) REFERENCES Producto(id) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY (id_producto) REFERENCES PRODUCTO(id_producto) ON DELETE CASCADE ON UPDATE CASCADE,
   -- Si se cambia el id del producto, se actualiza en Contiene
-  FOREIGN KEY (id_pedido) REFERENCES Pedido(id) ON DELETE CASCADE ON UPDATE CASCADE -- Si se cambia el id del pedido, se actualiza en Contiene
+  FOREIGN KEY (id_pedido) REFERENCES PEDIDO(id_pedido) ON DELETE CASCADE ON UPDATE CASCADE -- Si se cambia el id del pedido, se actualiza en Contiene
 );
-INSERT INTO PEDIDO_PRODUCTO (id_producto, id_pedido, unidades) VALUES (1, 1, 5);
-INSERT INTO PEDIDO_PRODUCTO (id_producto, id_pedido, unidades) VALUES (2, 1, 10);
-INSERT INTO PEDIDO_PRODUCTO (id_producto, id_pedido, unidades) VALUES (3, 2, 7);
-INSERT INTO PEDIDO_PRODUCTO (id_producto, id_pedido, unidades) VALUES (1, 3, 2);
-INSERT INTO PEDIDO_PRODUCTO (id_producto, id_pedido, unidades) VALUES (4, 4, 8);
+-- INSERT INTO PEDIDO_PRODUCTO (id_producto, id_pedido, unidades) VALUES (1, 1, 5);
+-- INSERT INTO PEDIDO_PRODUCTO (id_producto, id_pedido, unidades) VALUES (2, 1, 10);
+-- INSERT INTO PEDIDO_PRODUCTO (id_producto, id_pedido, unidades) VALUES (3, 2, 7);
+-- INSERT INTO PEDIDO_PRODUCTO (id_producto, id_pedido, unidades) VALUES (1, 3, 2);
+-- INSERT INTO PEDIDO_PRODUCTO (id_producto, id_pedido, unidades) VALUES (4, 4, 8);
