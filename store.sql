@@ -151,6 +151,7 @@ CREATE TABLE PEDIDO_PRODUCTO (
 ---------------------------------------------------------------------------------------------------------------
 -----------------------------------------FALTA LIBRE, LAS TABLAS DE HERENCIA ----------------------------------
 ---------------------------------------------------------------------------------------------------------------
+-- Tabla libre
 CREATE TABLE LIBRE (
   id_empleado INT NOT NULL,
   fecha_inicio DATE NOT NULL,
@@ -162,4 +163,56 @@ CREATE TABLE LIBRE (
 
   FOREIGN KEY(id_empleado) REFERENCES EMPLEADO(id_empleado)
 
-)
+);
+
+-- Table sobremesa
+CREATE TABLE SOBREMESA (
+  id_producto INT NOT NULL,
+  caja VARCHAR(100) NOT NULL (motivo <> ''),
+  refrigeracion VARCHAR(100) NOT NULL (motivo <> ''),
+  placa_base VARCHAR(100) NOT NULL (motivo <> ''),
+  fuente VARCHAR(100) NOT NULL (motivo <> ''),
+
+  PRIMARY KEY(id_producto),
+
+  FOREIGN KEY(id_producto) REFERENCES PRODUCTO(id_producto)
+
+);
+
+
+-- Table portatiles 
+CREATE TABLE PORTATILES(
+  id_producto INT NOT NULL,
+  bateria VARCHAR(100) NOT NULL (motivo <> ''),
+  pulgadas VARCHAR(100) NOT NULL (motivo <> ''),
+
+  PRIMARY KEY(id_producto),
+
+  FOREIGN KEY(id_producto) REFERENCES PRODUCTO(id_producto)
+
+);
+
+
+-- Table dispositivos_moviles
+CREATE TABLE DISPOSITIVOS_MOVILES(
+  id_producto INT NOT NULL,
+  bateria VARCHAR(100) NOT NULL (motivo <> ''),
+  pulgadas VARCHAR(100) NOT NULL (motivo <> ''),
+  camara VARCHAR(100) NOT NULL (motivo <> ''),
+
+  PRIMARY KEY(id_producto),
+
+  FOREIGN KEY(id_producto) REFERENCES PRODUCTO(id_producto)
+
+);
+
+-- Table consola
+CREATE TABLE CONSOLA(
+  id_producto INT NOT NULL,
+  portable BOOLEAN NOT NULL,
+
+  PRIMARY KEY(id_producto),
+
+  FOREIGN KEY(id_producto) REFERENCES PRODUCTO(id_producto)
+
+);
