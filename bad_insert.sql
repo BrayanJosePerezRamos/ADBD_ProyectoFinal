@@ -199,3 +199,56 @@ INSERT INTO SOCIO (id_socio, dni, nombre, apellidos, datos_bancarios) VALUES
 INSERT INTO SOCIO (id_socio, dni, nombre, apellidos, datos_bancarios) VALUES
 (16, '78901234P', 'Elena', 'Gonzalez', 'ABC123456789');
 
+-- Pedido
+INSERT INTO PEDIDO (id_pedido, id_empleado, id_socio, fecha, importe_total) VALUES
+(1, 1, 1, '2024-12-17', 500.00),
+(1, 2, 2, '2024-12-18', 600.00), -- id_pedido repetido
+(2, 999, 1, '2024-12-17', 400.00), -- id_empleado no existe
+(3, 3, NULL, '2024-12-17', 300.00),
+(4, 4, 4, '2024-12-17', -200.00), -- importe_total negativo
+(5, 5, 5, '2050-01-10', 100.00);
+
+-- Trabaja
+INSERT INTO TRABAJA (id_empleado, id_local, id_zona, provincia, ciudad, calle, fecha_inicio, fecha_final, horario) VALUES
+(999, 1, 1, 'Madrid', 'Madrid', 'Gran Vía', '2024-01-01', '2024-12-31', ARRAY['09:00'::TIME, '17:00'::TIME]), -- id_empleado no existe
+(1, 1, 1, 'Madrid', 'Madrid', 'Gran Vía', '2024-12-31', '2024-12-31', ARRAY['09:00'::TIME, '17:00'::TIME]), -- fecha_final no puede ser igual o menor a fecha_inicio
+(1, 999, 999, 'Madrid', 'Madrid', 'Gran Vía', '2024-01-01', '2024-12-31', ARRAY['09:00'::TIME, '17:00'::TIME]), -- id_zona/id_local no existe
+(1, 1, 1, 'Madrid', 'Madrid', 'Gran Vía', '2024-01-01', '2024-12-31', ARRAY['09:00', '17:00']); -- sin ::TIME
+
+-- Pedido_producto
+INSERT INTO PEDIDO_PRODUCTO (id_producto, id_pedido, unidades) VALUES
+(999, 1, 2), -- id_producto no existe
+(1, 999, 2), -- id_pedido no existe
+(1, 1, 0); -- unidades deben ser mayores a 0
+
+-- Libre
+INSERT INTO LIBRE (id_empleado, fecha_inicio, fecha_final, motivo, baja) VALUES
+(999, '2024-12-17', '2024-12-31', 'Descanso', TRUE), -- id_empleado no existe
+(1, '2024-12-31', '2024-12-30', 'Vacaciones', FALSE); -- fecha_final no puede ser menor o igual a fecha_inicio
+
+-- Sobremesa 
+INSERT INTO SOBREMESA (id_producto, caja, refrigeracion, placa_base, fuente) VALUES
+(999, 'Torre normal', 'Activa', 'Intel B460', '650W'), -- id_producto no existe
+(1, '', 'Activa', 'Intel B560', '650W'), -- caja no puede estar vacío
+(1, 'Torre normal', ' ', 'Intel B560', '650W'), -- refrigeracion no puede estar vacío
+(1, 'Torre normal', 'Activa', ' ', '650W'), -- placa_base no puede estar vacío
+(1, 'Torre normal', 'Activa', 'Intel B560', ' '); -- fuente no puede estar vacío
+
+-- Portatiles
+INSERT INTO PORTATILES (id_producto, bateria, pulgadas) VALUES
+(999, 'Li-Ion 72Wh', '15.6"'), -- id_producto no existe
+(2, '', '15.6"'), -- bateria no puede estar vacío
+(2, 'Li-Ion 72Wh', ' '); -- pulgadas no puede estar vacío
+
+-- Dispositivos_moviles
+INSERT INTO DISPOSITIVOS_MOVILES (id_producto, bateria, pulgadas, camara) VALUES
+(999, 'Li-Ion 4500mAh', '6.5"', 'Triple 12MP'), -- id_producto no existe
+(3, '', '6.5"', 'Triple 12MP'), -- bateria no puede estar vacío
+(3, 'Li-Ion 4000mAh', '', 'Triple 12MP'), -- pulgadas no puede estar vacío
+(3, 'Li-Ion 4000mAh', '6.5"', ''), -- camara no puede estar vacío
+
+-- Consola
+INSERT INTO CONSOLA (id_producto, portable) VALUES
+(999, TRUE), -- id_producto no existe
+(5, NULL); -- portable debe ser BOOLEAN (TRUE o FALSE)
+

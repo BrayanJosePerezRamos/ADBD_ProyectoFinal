@@ -54,7 +54,7 @@ CREATE TABLE ZONA_PRODUCTO (
 
 -- Tabla Empleado
 CREATE TABLE EMPLEADO (
-  id_empleado SERIAL PRIMARY KEY,
+  id_empleado INT PRIMARY KEY CHECK (id_empleado > 0),
   dni VARCHAR(9) UNIQUE NOT NULL,
   CONSTRAINT dni_valido CHECK (dni ~ '^[0-9]{8}[A-Z]$'),
   nombre VARCHAR(100) NOT NULL CHECK (nombre <> ''),
@@ -78,7 +78,7 @@ CREATE TABLE PEDIDO (
   id_empleado INT,
   id_socio INT,
   fecha DATE NOT NULL CHECK (fecha <= CURRENT_DATE),
-  importe_total DECIMAL(10, 2) NOT NULL CHECK (importe_total >= 0),
+  importe_total DECIMAL(10, 2) NOT NULL CHECK (importe_total >= 0) DEFAULT 0,
 
   FOREIGN KEY (id_empleado) REFERENCES EMPLEADO(id_empleado) ON DELETE RESTRICT ON UPDATE RESTRICT,
   FOREIGN KEY (id_socio) REFERENCES SOCIO(id_socio) ON DELETE
@@ -102,7 +102,7 @@ CREATE TABLE TRABAJA (
   -- PRIMARY KEY(id_zona, id_local, provincia, ciudad, calle),
   -- Si se borra un empleado, se elimina su historial
   FOREIGN KEY (id_zona, id_local, provincia, ciudad, calle) REFERENCES ZONA(id_zona, id_local, provincia, ciudad, calle) ON DELETE
-  SET NULL ON UPDATE CASCADE -- Si se cambia el id de Zona, se actualiza en Trabaja
+  CASCADE ON UPDATE CASCADE -- Si se cambia el id de Zona, se actualiza en Trabaja
 );
 
 -- Tabla Contiene
@@ -228,32 +228,6 @@ BEFORE INSERT ON TRABAJA
 FOR EACH ROW
 EXECUTE FUNCTION verificar_franjas_libre_trabaja();
 
--- Trigger 2.2 para verificar solapamiento de fechas con TRABAJA al insertar en LIBRE
-CREATE OR REPLACE FUNCTION verificar_solapamiento_con_trabaja()
-RETURNS TRIGGER AS $$
-BEGIN
-    -- Verificar si hay un solapamiento entre las fechas de LIBRE y TRABAJA
-    IF EXISTS (
-        SELECT 1
-        FROM TRABAJA
-        WHERE id_empleado = NEW.id_empleado
-          AND NEW.fecha_inicio <= fecha_final
-          AND NEW.fecha_final >= fecha_inicio
-    ) THEN
-        RAISE EXCEPTION 'El período de vacaciones se solapa con un período de trabajo registrado.';
-    END IF;
-
-    RETURN NEW;
-END;
-$$ LANGUAGE plpgsql;
-
--- Crear el trigger para verificar al insertar en LIBRE
-CREATE TRIGGER trigger_verificar_solapamiento_con_trabaja
-BEFORE INSERT ON LIBRE
-FOR EACH ROW
-EXECUTE FUNCTION verificar_solapamiento_con_trabaja();
-
-
 -- Trigger 3: Verificar que un empleado no está de vacaciones o fuera de horario al asignarle un PEDIDO
 CREATE OR REPLACE FUNCTION verificar_empleado_pedido()
 RETURNS TRIGGER AS $$
@@ -287,3 +261,26 @@ BEFORE INSERT ON PEDIDO
 FOR EACH ROW
 EXECUTE FUNCTION verificar_empleado_pedido();
 
+-- Trigger 4: Calcular coste total del pedido
+CREATE OR REPLACE FUNCTION calcular_importe_total()
+RETURNS TRIGGER AS $$
+BEGIN
+    -- Actualizar el importe total del pedido
+    UPDATE PEDIDO
+    SET importe_total = (
+        SELECT SUM(pp.unidades * p.precio_unidad)
+        FROM PEDIDO_PRODUCTO pp
+        INNER JOIN PRODUCTO p ON pp.id_producto = p.id_producto
+        WHERE pp.id_pedido = NEW.id_pedido
+    )
+    WHERE id_pedido = NEW.id_pedido;
+
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Crear el trigger
+CREATE TRIGGER trig_actualizar_importe_total
+AFTER INSERT OR UPDATE ON PEDIDO_PRODUCTO
+FOR EACH ROW
+EXECUTE FUNCTION calcular_importe_total();
