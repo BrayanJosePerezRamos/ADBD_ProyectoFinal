@@ -45,8 +45,23 @@ UPDATE SOCIO SET apellidos = 'Fernandez Updated' WHERE id_socio = 2;
 UPDATE SOCIO SET datos_bancarios = 'ES7600000000000000000002' WHERE id_socio = 3;
 UPDATE SOCIO SET dni = '12345678Z' WHERE id_socio = 4;
 UPDATE SOCIO SET nombre = 'Ana Updated' WHERE id_socio = 5;
+
 -- Pedido
+SELECT 'TABLA PEDIDO';
+UPDATE PEDIDO SET importe_total = 550.00, fecha = '2024-12-03' WHERE id_pedido = 1;
+UPDATE PEDIDO SET id_socio = 6, importe_total = 1300.00 WHERE id_pedido = 2;
+UPDATE PEDIDO SET importe_total = 950.00 WHERE id_pedido = 6;
+UPDATE PEDIDO SET id_socio = 10, fecha = '2024-12-18' WHERE id_pedido = 9;
+UPDATE PEDIDO SET fecha = '2024-11-21', importe_total = 380.00 WHERE id_pedido = 10;
+
 -- Trabaja
+SELECT 'TABLA TRABAJA';
+UPDATE TRABAJA 
+SET fecha_final = '2024-12-31', horario = ARRAY['09:00'::TIME, '17:00'::TIME] WHERE id_empleado = 2 AND fecha_inicio = '2023-02-01';
+UPDATE TRABAJA 
+SET fecha_final = '2023-10-31', horario = ARRAY['07:00'::TIME, '15:00'::TIME] WHERE id_empleado = 4 AND provincia = 'Sevilla';
+UPDATE TRABAJA 
+SET fecha_inicio = '2024-05-01', horario = ARRAY['10:00'::TIME, '18:00'::TIME] WHERE id_empleado = 13 AND ciudad = 'Vigo';
 
 -- PEDIDO_PRODUCTO
 SELECT 'TABLA PEDIDO_PRODUCTO';
@@ -65,6 +80,35 @@ UPDATE LIBRE SET fecha_final = '2024-10-12', motivo = 'Baja por enfermedad prolo
 UPDATE LIBRE SET baja = FALSE, motivo = 'Recuperación de cirugía exitosa' WHERE id_empleado = 15 AND fecha_inicio = '2024-12-01';
 
 -- Sobremesa
+SELECT 'TABLA SOBREMESA';
+UPDATE SOBREMESA SET caja = 'Torre avanzada', refrigeracion = 'Activa', placa_base = 'Intel Z590', fuente = '1000W' WHERE id_producto = 1;
+UPDATE SOBREMESA SET caja = 'Torre compacta', refrigeracion = 'Pasiva', placa_base = 'AMD B550', fuente = '650W' WHERE id_producto = 7;
+UPDATE SOBREMESA SET caja = 'Torre profesional', refrigeracion = 'Activa', placa_base = 'Intel Z690', fuente = '850W' WHERE id_producto = 13;
+UPDATE SOBREMESA SET refrigeracion = 'Pasiva', fuente = '750W' WHERE id_producto = 19;
+UPDATE SOBREMESA SET caja = 'Torre personalizada', placa_base = 'Intel B460' WHERE id_producto = 1;
+
 -- Portatiles
+SELECT 'TABLA PORTATILES';
+UPDATE PORTATILES SET bateria = 'Li-Ion 72Wh', pulgadas = '16"' WHERE id_producto = 2;
+UPDATE PORTATILES SET bateria = 'Li-Po 5000mAh', pulgadas = '11.6"' WHERE id_producto = 8;
+UPDATE PORTATILES SET bateria = 'Li-Ion 52Wh', pulgadas = '14"' WHERE id_producto = 9;
+UPDATE PORTATILES SET bateria = 'Li-Ion 100Wh', pulgadas = '15.6"' WHERE id_producto = 14;
+UPDATE PORTATILES SET pulgadas = '18.4"' WHERE id_producto = 20;
+
 -- Dispositivos moviles
--- Consolas
+SELECT 'TABLA DISPOSITIVOS_MOVILES';
+UPDATE DISPOSITIVOS_MOVILES SET bateria = 'Li-Ion 5000mAh', pulgadas = '6.7"', camara = 'Cuádruple 64MP' WHERE id_producto = 3;
+UPDATE DISPOSITIVOS_MOVILES SET bateria = 'Li-Ion 4200mAh', camara = 'Dual 16MP' WHERE id_producto = 4;
+UPDATE DISPOSITIVOS_MOVILES SET bateria = 'Li-Ion 5000mAh', camara = 'Triple 48MP' WHERE id_producto = 12;
+UPDATE DISPOSITIVOS_MOVILES SET bateria = 'Li-Ion 4300mAh', camara = 'Cuádruple 108MP' WHERE id_producto = 15;
+UPDATE DISPOSITIVOS_MOVILES SET camara = 'Mono 12MP', bateria = 'Li-Ion 200mAh' WHERE id_producto = 18;
+
+-- Consola
+SELECT 'TABLA CONSOLA';
+UPDATE CONSOLA SET portable = TRUE WHERE id_producto = 5;
+UPDATE CONSOLA SET portable = FALSE WHERE id_producto = 6;
+UPDATE CONSOLA SET portable = TRUE WHERE id_producto = 17;
+UPDATE CONSOLA SET portable = FALSE WHERE id_producto = 5;
+UPDATE CONSOLA SET portable = TRUE WHERE id_producto = 6;
+
+
