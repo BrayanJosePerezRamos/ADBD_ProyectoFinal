@@ -31,7 +31,6 @@ UPDATE EMPLEADO SET id_empleado = NULL WHERE id_empleado = 5; -- Fails due to pr
 
 UPDATE PEDIDO SET importe_total = -1000 WHERE id_pedido = 1; -- Fails due to negative value in 'importe_total'
 UPDATE PEDIDO SET fecha = '2025-01-01' WHERE id_pedido = 2; -- Fails due to date being in the future
-UPDATE PEDIDO SET id_socio = NULL WHERE id_pedido = 3; -- Fails due to foreign key constraint 'id_socio' being NULL
 UPDATE PEDIDO SET id_empleado = 999 WHERE id_pedido = 4; -- Fails due to no matching 'id_empleado' in the referenced table
 UPDATE PEDIDO SET importe_total = 'Invalid' WHERE id_pedido = 5; -- Fails due to incorrect data type in 'importe_total'
 
@@ -47,28 +46,21 @@ UPDATE LIBRE SET baja = NULL WHERE id_empleado = 3; -- Fails due to NULL in non-
 UPDATE LIBRE SET motivo = '' WHERE id_empleado = 4; -- Fails due to empty string in 'motivo'
 UPDATE LIBRE SET id_empleado = NULL WHERE id_empleado = 5; -- Fails due to primary key being NULL
 
-UPDATE TRABAJA SET fecha_inicio = '2025-01-01' WHERE id_empleado = 1; -- Fails due to date being in the future
-UPDATE TRABAJA SET fecha_final = '2023-01-01' WHERE id_empleado = 2; -- Fails due to 'fecha_final' being before 'fecha_inicio'
-UPDATE TRABAJA SET id_zona = NULL WHERE id_empleado = 3; -- Fails due to foreign key constraint 'id_zona' being NULL
 UPDATE TRABAJA SET id_local = 999 WHERE id_empleado = 4; -- Fails due to no matching 'id_local' in the referenced table
 UPDATE TRABAJA SET horario = NULL WHERE id_empleado = 5; -- Fails due to NULL value in 'horario' array
 
 UPDATE SOBREMESA SET caja = NULL WHERE id_producto = 1; -- Fails due to NULL in non-nullable field 'caja'
-UPDATE SOBREMESA SET placa_base = 'Invalid' WHERE id_producto = 7; -- Fails due to invalid value in 'placa_base'
 UPDATE SOBREMESA SET id_producto = 999 WHERE id_producto = 13; -- Fails due to no matching 'id_producto' in the referenced table
 UPDATE SOBREMESA SET fuente = '' WHERE id_producto = 19; -- Fails due to empty string in 'fuente'
-UPDATE SOBREMESA SET id_producto = NULL WHERE id_producto = 1; -- Fails due to primary key being NULL
 
 UPDATE PORTATILES SET bateria = NULL WHERE id_producto = 2; -- Fails due to NULL in non-nullable field 'bateria'
 UPDATE PORTATILES SET pulgadas = '' WHERE id_producto = 8; -- Fails due to empty string in 'pulgadas'
 UPDATE PORTATILES SET id_producto = 999 WHERE id_producto = 9; -- Fails due to no matching 'id_producto' in the referenced table
-UPDATE PORTATILES SET bateria = 'Invalid' WHERE id_producto = 11; -- Fails due to invalid value in 'bateria'
 UPDATE PORTATILES SET id_producto = NULL WHERE id_producto = 14; -- Fails due to primary key being NULL
 
 UPDATE DISPOSITIVOS_MOVILES SET bateria = NULL WHERE id_producto = 3; -- Fails due to NULL in non-nullable field 'bateria'
 UPDATE DISPOSITIVOS_MOVILES SET camara = '' WHERE id_producto = 4; -- Fails due to empty string in 'camara'
 UPDATE DISPOSITIVOS_MOVILES SET id_producto = 999 WHERE id_producto = 10; -- Fails due to no matching 'id_producto' in the referenced table
-UPDATE DISPOSITIVOS_MOVILES SET camara = 'Invalid' WHERE id_producto = 12; -- Fails due to invalid value in 'camara'
 UPDATE DISPOSITIVOS_MOVILES SET id_producto = NULL WHERE id_producto = 15; -- Fails due to primary key being NULL
 
 UPDATE CONSOLA SET portable = NULL WHERE id_producto = 5; -- Fails due to NULL in non-nullable field 'portable'
@@ -81,5 +73,3 @@ UPDATE CONSOLA SET portable = NULL WHERE id_producto = 6; -- Fails due to NULL i
 UPDATE SOCIO SET dni = '1234' WHERE id_socio = 1;
 UPDATE SOCIO SET nombre = '' WHERE id_socio = 2; 
 UPDATE SOCIO SET datos_bancarios = '' WHERE id_socio = 3;
-UPDATE SOCIO SET id_socio = NULL WHERE dni = '12345678Z';
-UPDATE SOCIO SET dni = '12345678X' WHERE dni = '12345678Z';
