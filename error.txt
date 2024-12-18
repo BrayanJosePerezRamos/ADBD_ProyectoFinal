@@ -1,0 +1,130 @@
+psql:bad_update.sql:2: ERROR:  null value in column "id_local" of relation "local" violates not-null constraint
+DETAIL:  Failing row contains (null, Bilbao, Bilbao, Gran Vía Don Diego López de Haro, Store F).
+psql:bad_update.sql:3: ERROR:  new row for relation "local" violates check constraint "local_provincia_check"
+DETAIL:  Failing row contains (7, , Zaragoza, Calle del Coso, Store G).
+psql:bad_update.sql:4: ERROR:  null value in column "ciudad" of relation "local" violates not-null constraint
+DETAIL:  Failing row contains (8, Murcia, null, Avenida de la Constitución, Store H).
+psql:bad_update.sql:5: ERROR:  new row for relation "local" violates check constraint "local_calle_check"
+DETAIL:  Failing row contains (9, Granada, Granada, , Store I).
+psql:bad_update.sql:6: ERROR:  new row for relation "local" violates check constraint "local_nombre_check"
+DETAIL:  Failing row contains (10, Palma, Palma de Mallorca, Carrer de Sant Miquel, ).
+psql:bad_update.sql:8: ERROR:  insert or update on table "zona" violates foreign key constraint "zona_id_local_provincia_ciudad_calle_fkey"
+DETAIL:  Key (id_local, provincia, ciudad, calle)=(1, , Madrid, Gran Vía) is not present in table "local".
+psql:bad_update.sql:9: ERROR:  insert or update on table "zona" violates foreign key constraint "zona_id_local_provincia_ciudad_calle_fkey"
+DETAIL:  Key (id_local, provincia, ciudad, calle)=(-1, Valencia, Barcelona, Calle Nueva) is not present in table "local".
+psql:bad_update.sql:10: ERROR:  null value in column "id_zona" of relation "zona" violates not-null constraint
+DETAIL:  Failing row contains (null, 3, Valencia, Valencia, Avenida del Oeste, reparacion).
+psql:bad_update.sql:11: ERROR:  null value in column "ciudad" of relation "zona" violates not-null constraint
+DETAIL:  Failing row contains (4, 3, Valencia, null, Calle Tetuán, tienda).
+psql:bad_update.sql:12: ERROR:  insert or update on table "zona" violates foreign key constraint "zona_id_local_provincia_ciudad_calle_fkey"
+DETAIL:  Key (id_local, provincia, ciudad, calle)=(5, Palma, Palma de Mallorca, Carrer de Sant Miquel) is not present in table "local".
+psql:bad_update.sql:14: ERROR:  column "descripcion" of relation "producto" does not exist
+LINE 1: UPDATE PRODUCTO SET descripcion = NULL WHERE id_producto = 1...
+                            ^
+psql:bad_update.sql:15: ERROR:  column "precio" of relation "producto" does not exist
+LINE 1: UPDATE PRODUCTO SET precio = -100 WHERE id_producto = 5;
+                            ^
+psql:bad_update.sql:16: ERROR:  column "id_categoria" of relation "producto" does not exist
+LINE 1: UPDATE PRODUCTO SET id_categoria = NULL WHERE id_producto = ...
+                            ^
+psql:bad_update.sql:17: ERROR:  new row for relation "producto" violates check constraint "producto_nombre_check"
+DETAIL:  Failing row contains (3, , dispositivos moviles, 750.00, 6 GB, 128 GB, Samsung, 200).
+psql:bad_update.sql:18: ERROR:  null value in column "id_producto" of relation "producto" violates not-null constraint
+DETAIL:  Failing row contains (null, Smartphone Y, dispositivos moviles, 800.00, 16 GB, 256 GB, Apple, 150).
+psql:bad_update.sql:20: ERROR:  null value in column "id_producto" of relation "zona_producto" violates not-null constraint
+DETAIL:  Failing row contains (1, 1, null, Madrid, Madrid, Gran Vía).
+psql:bad_update.sql:21: ERROR:  insert or update on table "zona_producto" violates foreign key constraint "zona_producto_id_zona_id_local_provincia_ciudad_calle_fkey"
+DETAIL:  Key (id_zona, id_local, provincia, ciudad, calle)=(99, 2, Valencia, Barcelona, Calle Nueva) is not present in table "zona".
+psql:bad_update.sql:22: ERROR:  column "unidades" of relation "zona_producto" does not exist
+LINE 1: UPDATE ZONA_PRODUCTO SET unidades = -5 WHERE id_zona = 3 AND...
+                                 ^
+psql:bad_update.sql:23: ERROR:  insert or update on table "zona_producto" violates foreign key constraint "zona_producto_id_producto_fkey"
+DETAIL:  Key (id_producto)=(1000) is not present in table "producto".
+psql:bad_update.sql:24: ERROR:  insert or update on table "zona_producto" violates foreign key constraint "zona_producto_id_zona_id_local_provincia_ciudad_calle_fkey"
+DETAIL:  Key (id_zona, id_local, provincia, ciudad, calle)=(5, 2, Valencia, Barcelona, Calle Nueva) is not present in table "zona".
+psql:bad_update.sql:26: ERROR:  column "salario" of relation "empleado" does not exist
+LINE 1: UPDATE EMPLEADO SET salario = -500 WHERE id_empleado = 1;
+                            ^
+psql:bad_update.sql:27: ERROR:  column "fecha_nacimiento" of relation "empleado" does not exist
+LINE 1: UPDATE EMPLEADO SET fecha_nacimiento = NULL WHERE id_emplead...
+                            ^
+psql:bad_update.sql:28: ERROR:  column "id_departamento" of relation "empleado" does not exist
+LINE 1: UPDATE EMPLEADO SET id_departamento = 999 WHERE id_empleado ...
+                            ^
+psql:bad_update.sql:29: ERROR:  new row for relation "empleado" violates check constraint "empleado_nombre_check"
+DETAIL:  Failing row contains (4, 45678901D, , Garcia, IBAN654987654).
+psql:bad_update.sql:30: ERROR:  null value in column "id_empleado" of relation "empleado" violates not-null constraint
+DETAIL:  Failing row contains (null, 56789012E, Luis Miguel, Martinez, IBAN321456987).
+psql:bad_update.sql:32: ERROR:  new row for relation "pedido" violates check constraint "pedido_importe_total_check"
+DETAIL:  Failing row contains (1, 1, 1, 2024-12-03, -1000.00).
+psql:bad_update.sql:33: ERROR:  new row for relation "pedido" violates check constraint "pedido_fecha_check"
+DETAIL:  Failing row contains (2, 1, 6, 2025-01-01, 2400.00).
+psql:bad_update.sql:34: ERROR:  insert or update on table "pedido" violates foreign key constraint "pedido_id_empleado_fkey"
+DETAIL:  Key (id_empleado)=(999) is not present in table "empleado".
+psql:bad_update.sql:35: ERROR:  invalid input syntax for type numeric: "Invalid"
+LINE 1: UPDATE PEDIDO SET importe_total = 'Invalid' WHERE id_pedido ...
+                                          ^
+psql:bad_update.sql:37: ERROR:  new row for relation "pedido_producto" violates check constraint "pedido_producto_unidades_check"
+DETAIL:  Failing row contains (2, 1, -1).
+psql:bad_update.sql:38: ERROR:  null value in column "id_producto" of relation "pedido_producto" violates not-null constraint
+DETAIL:  Failing row contains (null, 2, 2).
+psql:bad_update.sql:39: ERROR:  insert or update on table "pedido_producto" violates foreign key constraint "pedido_producto_id_pedido_fkey"
+DETAIL:  Key (id_pedido)=(999) is not present in table "pedido".
+psql:bad_update.sql:40: ERROR:  invalid input syntax for type integer: "Invalid"
+LINE 1: UPDATE PEDIDO_PRODUCTO SET unidades = 'Invalid' WHERE id_ped...
+                                              ^
+psql:bad_update.sql:41: ERROR:  insert or update on table "pedido_producto" violates foreign key constraint "pedido_producto_id_producto_fkey"
+DETAIL:  Key (id_producto)=(999) is not present in table "producto".
+psql:bad_update.sql:43: ERROR:  new row for relation "libre" violates check constraint "libre_check"
+DETAIL:  Failing row contains (1, 2025-01-01, 2024-01-18, Vacaciones anuales extendidas, f).
+psql:bad_update.sql:44: ERROR:  new row for relation "libre" violates check constraint "libre_check"
+DETAIL:  Failing row contains (2, 2024-02-05, 2023-01-01, Permiso médico, t).
+psql:bad_update.sql:45: ERROR:  null value in column "baja" of relation "libre" violates not-null constraint
+DETAIL:  Failing row contains (3, 2024-03-02, 2024-03-04, Asuntos personales extendidos, null).
+psql:bad_update.sql:46: ERROR:  new row for relation "libre" violates check constraint "libre_motivo_check"
+DETAIL:  Failing row contains (4, 2024-03-15, 2024-03-18, , t).
+psql:bad_update.sql:47: ERROR:  null value in column "id_empleado" of relation "libre" violates not-null constraint
+DETAIL:  Failing row contains (null, 2024-04-01, 2024-04-05, Viaje familiar, f).
+psql:bad_update.sql:49: ERROR:  insert or update on table "trabaja" violates foreign key constraint "trabaja_id_zona_id_local_provincia_ciudad_calle_fkey"
+DETAIL:  Key (id_zona, id_local, provincia, ciudad, calle)=(4, 999, Sevilla, Sevilla, Calle Tetuán) is not present in table "zona".
+psql:bad_update.sql:50: ERROR:  null value in column "horario" of relation "trabaja" violates not-null constraint
+DETAIL:  Failing row contains (5, 5, 5, Madrid, Madrid, Avenida Principal, 2023-05-01, null, null).
+psql:bad_update.sql:52: ERROR:  null value in column "caja" of relation "sobremesa" violates not-null constraint
+DETAIL:  Failing row contains (1, null, Activa, Intel B460, 1000W).
+psql:bad_update.sql:53: ERROR:  insert or update on table "sobremesa" violates foreign key constraint "sobremesa_id_producto_fkey"
+DETAIL:  Key (id_producto)=(999) is not present in table "producto".
+psql:bad_update.sql:54: ERROR:  new row for relation "sobremesa" violates check constraint "sobremesa_fuente_check"
+DETAIL:  Failing row contains (19, Torre de alto rendimiento, Pasiva, Intel Z690, ).
+psql:bad_update.sql:56: ERROR:  null value in column "bateria" of relation "portatiles" violates not-null constraint
+DETAIL:  Failing row contains (2, null, 16").
+psql:bad_update.sql:57: ERROR:  new row for relation "portatiles" violates check constraint "portatiles_pulgadas_check"
+DETAIL:  Failing row contains (8, Li-Po 5000mAh, ).
+psql:bad_update.sql:58: ERROR:  insert or update on table "portatiles" violates foreign key constraint "portatiles_id_producto_fkey"
+DETAIL:  Key (id_producto)=(999) is not present in table "producto".
+psql:bad_update.sql:59: ERROR:  null value in column "id_producto" of relation "portatiles" violates not-null constraint
+DETAIL:  Failing row contains (null, Li-Ion 100Wh, 15.6").
+psql:bad_update.sql:61: ERROR:  null value in column "bateria" of relation "dispositivos_moviles" violates not-null constraint
+DETAIL:  Failing row contains (3, null, 6.7", Cuádruple 64MP).
+psql:bad_update.sql:62: ERROR:  new row for relation "dispositivos_moviles" violates check constraint "dispositivos_moviles_camara_check"
+DETAIL:  Failing row contains (4, Li-Ion 4200mAh, 6.1", ).
+psql:bad_update.sql:63: ERROR:  insert or update on table "dispositivos_moviles" violates foreign key constraint "dispositivos_moviles_id_producto_fkey"
+DETAIL:  Key (id_producto)=(999) is not present in table "producto".
+psql:bad_update.sql:64: ERROR:  null value in column "id_producto" of relation "dispositivos_moviles" violates not-null constraint
+DETAIL:  Failing row contains (null, Li-Ion 4300mAh, 6.55", Cuádruple 108MP).
+psql:bad_update.sql:66: ERROR:  null value in column "portable" of relation "consola" violates not-null constraint
+DETAIL:  Failing row contains (5, null).
+psql:bad_update.sql:67: ERROR:  insert or update on table "consola" violates foreign key constraint "consola_id_producto_fkey"
+DETAIL:  Key (id_producto)=(999) is not present in table "producto".
+psql:bad_update.sql:68: ERROR:  invalid input syntax for type boolean: "Invalid"
+LINE 1: UPDATE CONSOLA SET portable = 'Invalid' WHERE id_producto = ...
+                                      ^
+psql:bad_update.sql:69: ERROR:  null value in column "id_producto" of relation "consola" violates not-null constraint
+DETAIL:  Failing row contains (null, f).
+psql:bad_update.sql:70: ERROR:  null value in column "portable" of relation "consola" violates not-null constraint
+DETAIL:  Failing row contains (6, null).
+psql:bad_update.sql:73: ERROR:  new row for relation "socio" violates check constraint "dni_valido"
+DETAIL:  Failing row contains (1, 1234, Carlos Updated, Doe, ES1234567890123456789012345678901234).
+psql:bad_update.sql:74: ERROR:  new row for relation "socio" violates check constraint "socio_nombre_check"
+DETAIL:  Failing row contains (2, 23456789B, , Fernandez Updated, ES9876543210987654321098765432109876).
+psql:bad_update.sql:75: ERROR:  new row for relation "socio" violates check constraint "socio_datos_bancarios_check"
+DETAIL:  Failing row contains (3, 34567890C, Carlos, Gomez, ).
