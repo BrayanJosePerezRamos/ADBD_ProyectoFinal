@@ -45,15 +45,8 @@ UPDATE SOCIO SET apellidos = 'Fernandez Updated' WHERE id_socio = 2;
 UPDATE SOCIO SET datos_bancarios = 'ES7600000000000000000002' WHERE id_socio = 3;
 UPDATE SOCIO SET dni = '12345678Z' WHERE id_socio = 4;
 UPDATE SOCIO SET nombre = 'Ana Updated' WHERE id_socio = 5;
-
 -- Pedido
-SELECT 'TABLA PEDIDO';
-UPDATE PEDIDO SET importe_total = 550.00 WHERE id_pedido = 1;
-UPDATE PEDIDO SET fecha = '2024-12-03' WHERE id_pedido = 2;
-UPDATE PEDIDO SET id_socio = 3 WHERE id_pedido = 4;
-UPDATE PEDIDO SET id_empleado = 6 WHERE id_pedido = 5;
-UPDATE PEDIDO SET importe_total = 1200.00 WHERE id_pedido = 9;
-
+-- Trabaja
 
 -- PEDIDO_PRODUCTO
 SELECT 'TABLA PEDIDO_PRODUCTO';
@@ -71,3 +64,7 @@ UPDATE LIBRE SET motivo = 'Baja por accidente prolongada' WHERE id_empleado = 4 
 UPDATE LIBRE SET fecha_final = '2024-10-12', motivo = 'Baja por enfermedad prolongada' WHERE id_empleado = 12 AND fecha_inicio = '2024-10-05';
 UPDATE LIBRE SET baja = FALSE, motivo = 'Recuperación de cirugía exitosa' WHERE id_empleado = 15 AND fecha_inicio = '2024-12-01';
 
+-- Sobremesa
+-- Portatiles
+-- Dispositivos moviles
+-- Consolas
