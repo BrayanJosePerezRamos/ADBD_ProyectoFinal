@@ -127,7 +127,7 @@ CREATE TABLE LIBRE (
 
   PRIMARY KEY(fecha_inicio),
 
-  FOREIGN KEY(id_empleado) REFERENCES EMPLEADO(id_empleado)
+  FOREIGN KEY(id_empleado) REFERENCES EMPLEADO(id_empleado) ON DELETE CASCADE ON UPDATE CASCADE
 
 );
 
@@ -145,7 +145,7 @@ CREATE TABLE SOBREMESA (
 
   PRIMARY KEY(id_producto),
 
-  FOREIGN KEY(id_producto) REFERENCES PRODUCTO(id_producto)
+  FOREIGN KEY(id_producto) REFERENCES PRODUCTO(id_producto) ON DELETE CASCADE ON UPDATE CASCADE
 
 );
 
@@ -158,7 +158,7 @@ CREATE TABLE PORTATILES(
 
   PRIMARY KEY(id_producto),
 
-  FOREIGN KEY(id_producto) REFERENCES PRODUCTO(id_producto)
+  FOREIGN KEY(id_producto) REFERENCES PRODUCTO(id_producto) ON DELETE CASCADE ON UPDATE CASCADE
 
 );
 
@@ -172,7 +172,7 @@ CREATE TABLE DISPOSITIVOS_MOVILES(
 
   PRIMARY KEY(id_producto),
 
-  FOREIGN KEY(id_producto) REFERENCES PRODUCTO(id_producto)
+  FOREIGN KEY(id_producto) REFERENCES PRODUCTO(id_producto) ON DELETE CASCADE ON UPDATE CASCADE
 
 );
 
@@ -182,7 +182,7 @@ CREATE TABLE CONSOLA(
   portable BOOLEAN NOT NULL,
 
   PRIMARY KEY(id_producto),
-  FOREIGN KEY(id_producto) REFERENCES PRODUCTO(id_producto)
+  FOREIGN KEY(id_producto) REFERENCES PRODUCTO(id_producto) ON DELETE CASCADE ON UPDATE CASCADE
 
 );
 
@@ -284,3 +284,37 @@ CREATE TRIGGER trig_actualizar_importe_total
 AFTER INSERT OR UPDATE ON PEDIDO_PRODUCTO
 FOR EACH ROW
 EXECUTE FUNCTION calcular_importe_total();
+
+-- Trigger 5: asignar empleado nuevo a un pedido si se borra el empleado asignado
+CREATE OR REPLACE FUNCTION reasignar_a_empleado_activo()
+RETURNS TRIGGER AS $$
+DECLARE
+    nuevo_empleado INT;
+BEGIN
+    -- Buscar un empleado activo en la tabla TRABAJA
+    SELECT id_empleado
+    INTO nuevo_empleado
+    FROM TRABAJA
+    WHERE fecha_final IS NULL OR fecha_final > CURRENT_DATE
+    LIMIT 1;
+
+    -- Si no se encuentra ningún empleado activo, lanzar un error
+    IF nuevo_empleado IS NULL THEN
+        RAISE EXCEPTION 'No hay empleados activos disponibles para reasignar los pedidos';
+    END IF;
+
+    -- Reasignar los pedidos al empleado activo encontrado
+    UPDATE PEDIDO
+    SET id_empleado = nuevo_empleado
+    WHERE id_empleado = OLD.id_empleado;
+
+    RETURN OLD;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Crear el trigger en la tabla EMPLEADO
+CREATE TRIGGER antes_borrar_empleado
+BEFORE DELETE ON EMPLEADO
+FOR EACH ROW
+EXECUTE FUNCTION reasignar_a_empleado_activo();
+

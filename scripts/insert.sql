@@ -89,7 +89,6 @@ INSERT INTO ZONA_PRODUCTO (id_local, id_zona, id_producto, provincia, ciudad, ca
 (18, 18, 18, 'Santander', 'Santander', 'Calle Cádiz'),
 (19, 19, 19, 'Valladolid', 'Valladolid', 'Calle de la Constitución'),
 (20, 20, 20, 'Logroño', 'Logroño', 'Calle Portales');
-
 -- Empleado
 INSERT INTO EMPLEADO (id_empleado, dni, nombre, apellidos, datos_bancarios) VALUES
 (1, '12345678A', 'John', 'Doe', 'IBAN123456789'),

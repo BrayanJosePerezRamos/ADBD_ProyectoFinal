@@ -39,3 +39,41 @@ DELETE FROM zona WHERE id_zona = 5;
 DELETE FROM zona WHERE id_zona NOT IN (SELECT id_zona FROM local);
 
 DELETE FROM zona_producto WHERE ciudad = 'Barcelona';
+
+
+DELETE FROM SOBREMESA;
+DELETE FROM PORTATILES;
+DELETE FROM DISPOSITIVOS_MOVILES;
+DELETE FROM CONSOLA;
+
+-- Inserts y Deletes para las tablas SOBREMESA, PORTATILES, DISPOSITIVOS_MOVILES y CONSOLA
+-- Utilizando los IDs de la tabla PRODUCTO
+
+-- Tabla SOBREMESA
+INSERT INTO sobremesa (id_producto, caja, refrigeracion, placa_base, fuente)
+VALUES (1, 'ATX Full Tower', 'Refrigeración líquida avanzada', 'MSI MPG Z790', 'Seasonic 850W');
+
+DELETE FROM sobremesa 
+WHERE id_producto = 1;
+
+-- Tabla PORTATILES
+INSERT INTO portatiles (id_producto, bateria, pulgadas)
+VALUES (2, '6 celdas - 6000 mAh', '15.6');
+
+DELETE FROM portatiles 
+WHERE id_producto = 2;
+
+-- Tabla DISPOSITIVOS_MOVILES
+INSERT INTO dispositivos_moviles (id_producto, bateria, pulgadas, camara)
+VALUES (3, '5000 mAh', '6.7', '108 MP Triple');
+
+DELETE FROM dispositivos_moviles 
+WHERE id_producto = 3;
+
+-- Tabla CONSOLA
+INSERT INTO consola (id_producto, portable)
+VALUES (5, TRUE);
+
+DELETE FROM consola 
+WHERE id_producto = 5;
+
