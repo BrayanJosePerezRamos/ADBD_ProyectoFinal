@@ -86,7 +86,24 @@ El diagrama relacional muestra la estructura física de la base de datos, incluy
    ```bash
    psql -d store -U usuario -f store.sql
    ```
-4. Accede a la API en `http://localhost:5000`.
+4. Puebla la base de datos con datos iniciales:
+   ```bash
+   store=# \i scripts/insert.sql
+   ```
+5. Navega hacia la carpeta de la API:
+   ```bash
+   cd ApiProyecto/store
+   ```
+6. Ejecuta la api con flask:
+   ```bash
+   flask --app app.py run
+   ```
+7. Accede a la API en `http://localhost:5000`.
+
+Cabe destacar que para la ejecución de la API se debe tener instalado Flask y psycopg2 en el entorno de Python. Para instalarlos, se puede utilizar pip:
+```bash
+pip install Flask psycopg2
+```
 
 ---
 
@@ -100,7 +117,7 @@ La API incluye las siguientes rutas principales:
 - **Local**: Información de los locales.
 - **Zona**: Gestión de zonas y asignación de productos.
 
-Consulta la documentación detallada de cada endpoint en los archivos correspondientes dentro del directorio `routes`, o el 
+Consulta la documentación detallada de cada endpoint en los archivos correspondientes dentro del directorio `routes`, o la raiz de la API en `http://localhost:5000` donde se muestra una tabla con los endpoints disponibles y una breve descripción de cada uno.
 
 ---
 
