@@ -125,7 +125,7 @@ CREATE TABLE LIBRE (
   motivo VARCHAR(100) NOT NULL CHECK (motivo <> ''),
   baja BOOLEAN NOT NULL,
 
-  PRIMARY KEY(fecha_inicio),
+  PRIMARY KEY(fecha_inicio, id_empleado),
 
   FOREIGN KEY(id_empleado) REFERENCES EMPLEADO(id_empleado) ON DELETE CASCADE ON UPDATE CASCADE
 
