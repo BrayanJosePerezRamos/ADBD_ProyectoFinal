@@ -100,7 +100,7 @@ La API incluye las siguientes rutas principales:
 - **Local**: Información de los locales.
 - **Zona**: Gestión de zonas y asignación de productos.
 
-Consulta la documentación detallada de cada endpoint en los archivos correspondientes dentro del directorio `routes`.
+Consulta la documentación detallada de cada endpoint en los archivos correspondientes dentro del directorio `routes`, o el 
 
 ---
 
