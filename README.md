@@ -15,7 +15,10 @@ El diagrama entidad-relación (ER) proporciona una visión general del diseño l
 ### Diagrama Relacional
 El diagrama relacional muestra la estructura física de la base de datos, incluyendo las tablas, columnas y sus relaciones.
 
-![Diagrama Relacional](./diagramas/Relacional.png)
+![Diagrama Relacional1](./diagramas/Relacional1.png)
+![Diagrama Relacional2](./diagramas/Relacional2.png)
+
+![Diagrama Relacional](./diagramas/RelacionalTablas.png)
 
 ---
 
